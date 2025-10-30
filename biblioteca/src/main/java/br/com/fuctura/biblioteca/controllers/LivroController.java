@@ -35,7 +35,7 @@ public class LivroController {
         return ResponseEntity.ok().body(modelMapper.map(livro, LivroDto.class));
     }
 
-    @GetMapping("/{titulo}")
+    @GetMapping("/titulo/{titulo}")
     public ResponseEntity<LivroDto> findByTitulo(@PathVariable String titulo) {
         Livro livro = livroService.findByTitulo(titulo);
         return ResponseEntity.ok().body(new LivroDto(livro));
