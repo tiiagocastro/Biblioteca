@@ -39,6 +39,7 @@ public class Livro {
         this.sinopse = livroDto.getSinopse();
         this.edicao = livroDto.getEdicao();
         this.categoria = livroDto.getCategoria();
+
     }
 
     public Integer getId() {

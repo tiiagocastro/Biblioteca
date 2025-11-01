@@ -43,6 +43,7 @@ public class LivroController {
     @GetMapping
     public ResponseEntity<List<LivroDto>> findAll(@RequestParam(value = "categoria", defaultValue = "0") Integer id_cat) {
         List<Livro> list = livroService.findAll(id_cat);
+
         return ResponseEntity.ok().body(list.stream().map(x -> new LivroDto(x)).collect(Collectors.toList()));
     }
 
@@ -50,6 +51,7 @@ public class LivroController {
     public ResponseEntity<LivroDto> save(@RequestParam(value = "categoria", defaultValue = "0") Integer id_cat,
                                          @RequestBody LivroDto livroDto) {
         Livro livro = livroService.save(id_cat, livroDto);
+
         return ResponseEntity.ok().body(new LivroDto(livro));
     }
 
@@ -68,4 +70,6 @@ public class LivroController {
         livroService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
 }
+

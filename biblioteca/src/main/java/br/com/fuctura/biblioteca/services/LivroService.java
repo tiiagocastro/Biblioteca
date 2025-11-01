@@ -56,6 +56,7 @@ public class LivroService {
         livroExistente.setCategoria(categoria);
 
         return livroRepository.save(livroExistente);
+
     }
 
     public void delete(Integer id) {

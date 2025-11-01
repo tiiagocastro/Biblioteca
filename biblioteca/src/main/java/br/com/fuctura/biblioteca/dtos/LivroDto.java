@@ -13,6 +13,7 @@ public class LivroDto {
     private Categoria categoria;
 
     public LivroDto() {
+
     }
 
     public LivroDto(Integer id, String titulo, String autor, String sinopse, Edicao edicao, Categoria categoria) {
