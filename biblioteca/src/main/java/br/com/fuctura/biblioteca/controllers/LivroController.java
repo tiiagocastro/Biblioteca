@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,18 +47,20 @@ public class LivroController {
     }
 
     @PostMapping
-    public ResponseEntity<LivroDto> save(@Valid @RequestBody LivroDto livroDto) {
-        Livro livro = modelMapper.map(livroDto, Livro.class);
-        Livro liv = livroService.save(livro);
-        return ResponseEntity.ok().body(modelMapper.map(liv, LivroDto.class));
+    public ResponseEntity<LivroDto> save(@RequestParam(value = "categoria", defaultValue = "0") Integer id_cat,
+                                         @RequestBody LivroDto livroDto) {
+        Livro livro = livroService.save(id_cat, livroDto);
+        return ResponseEntity.ok().body(new LivroDto(livro));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LivroDto> update(@PathVariable Integer id, @Valid @RequestBody LivroDto livroDto) {
-        livroDto.setId(id);
-        Livro livro = modelMapper.map(livroDto, Livro.class);
-        Livro livAtualizado = livroService.update(livro);
-        return ResponseEntity.ok().body(modelMapper.map(livAtualizado, LivroDto.class));
+    public ResponseEntity<LivroDto> update(@RequestParam(value = "categoria", defaultValue = "0") Integer id_cat,
+                                           @PathVariable Integer id,
+                                           @RequestBody LivroDto livrodto) {
+        Livro livro = livroService.update(id_cat, id, livrodto);
+        return ResponseEntity.ok().body(new LivroDto(livro));
+        // metodo de consulta
+        //localhost:8080/livro/1?categoria=3
     }
 
     @DeleteMapping("/{id}")
@@ -67,5 +68,4 @@ public class LivroController {
         livroService.delete(id);
         return ResponseEntity.noContent().build();
     }
-
 }

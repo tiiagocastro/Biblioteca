@@ -1,5 +1,6 @@
 package br.com.fuctura.biblioteca.models;
 
+import br.com.fuctura.biblioteca.dtos.LivroDto;
 import br.com.fuctura.biblioteca.enums.Edicao;
 
 import javax.persistence.*;
@@ -29,6 +30,15 @@ public class Livro {
         this.sinopse = sinopse;
         this.edicao = edicao;
         this.categoria = categoria;
+    }
+
+    public Livro(LivroDto livroDto) {
+        this.id = livroDto.getId();
+        this.titulo = livroDto.getTitulo();
+        this.autor = livroDto.getAutor();
+        this.sinopse = livroDto.getSinopse();
+        this.edicao = livroDto.getEdicao();
+        this.categoria = livroDto.getCategoria();
     }
 
     public Integer getId() {

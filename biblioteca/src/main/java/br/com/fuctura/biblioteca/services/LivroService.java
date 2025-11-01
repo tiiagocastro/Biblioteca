@@ -1,6 +1,8 @@
 package br.com.fuctura.biblioteca.services;
 
+import br.com.fuctura.biblioteca.dtos.LivroDto;
 import br.com.fuctura.biblioteca.exceptions.ObjectNotFoundException;
+import br.com.fuctura.biblioteca.models.Categoria;
 import br.com.fuctura.biblioteca.models.Livro;
 import br.com.fuctura.biblioteca.repositories.LivroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,27 +37,36 @@ public class LivroService {
         return livroRepository.findAllByCategoriaId(id_cat);
     }
 
-    public Livro save(Livro livro) {
-        buscarPorTitulo(livro);
-        return livroRepository.save(livro);
+    public Livro save(Integer id_cat, LivroDto livroDto) {
+        livroDto.setId(null);
+        Categoria cat = categoriaService.findById(id_cat);
+        livroDto.setCategoria(cat);
+        return livroRepository.save(new Livro(livroDto));
     }
 
-    public Livro update(Livro livro) {
-        findById(livro.getId());
-        buscarPorTitulo(livro);
-        return livroRepository.save(livro);
+    public Livro update(Integer idCat, Integer id, LivroDto livrodto) {
+        Livro livroExistente = findById(id);
+
+        livroExistente.setAutor(livrodto.getAutor());
+        livroExistente.setTitulo(livrodto.getTitulo());
+        livroExistente.setSinopse(livrodto.getSinopse());
+        livroExistente.setEdicao(livrodto.getEdicao());
+
+        Categoria categoria = categoriaService.findById(idCat);
+        livroExistente.setCategoria(categoria);
+
+        return livroRepository.save(livroExistente);
     }
 
     public void delete(Integer id) {
-        Livro livro = findById(id);
+        findById(id);
         livroRepository.deleteById(id);
     }
 
     private void buscarPorTitulo(Livro livro) {
         Optional<Livro> liv = livroRepository.findByTituloIgnoreCase(livro.getTitulo());
         if (liv.isPresent() && !liv.get().getId().equals(livro.getId())) {
-            throw new IllegalArgumentException("Já existe um livro com o título: "  + livro.getTitulo());
+            throw new IllegalArgumentException("Já existe um livro com o título: " + livro.getTitulo());
         }
     }
-
 }
